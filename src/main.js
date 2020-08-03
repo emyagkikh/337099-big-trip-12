@@ -1,25 +1,24 @@
 'use strict';
 
-const DAYS_AMOUNT = 2;
-const EVENT_POINT_AMOUNT = 3;
 
-const render = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
+const LIST_DAYS_AMOUNT = 2;
+const EVENT_POINTS_AMOUNT = 3;
 
-const createNewEventButton = () => {
-  return `<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>`;
-};
 
-const createTripInfo = () => {
-  return `<section class="trip-main__trip-info  trip-info"></section>`;
-};
+const loopHelper = (amount, callback) => new Array(amount).fill(`*`).map(callback);
+
+const render = (container, template, place) => container.insertAdjacentHTML(place, template);
+
+
+const createNewEventButton = () => `<button class="trip-main__event-add-btn  btn  btn--big  btn--yellow" type="button">New event</button>`;
+
+const createTripInfo = () => `<section class="trip-main__trip-info  trip-info"></section>`;
 
 const createTripInfoMain = () => {
   return `
     <div class="trip-info__main">
-        <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
-        <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
+      <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>
+      <p class="trip-info__dates">Mar 18&nbsp;&mdash;&nbsp;20</p>
     </div>
   `;
 };
@@ -27,45 +26,41 @@ const createTripInfoMain = () => {
 const createTripInfoCost = (price = 0, currency = `&euro;`) => {
   return `
     <p class="trip-info__cost">
-        Total: ${currency}&nbsp;<span class="trip-info__cost-value">${price}</span>
-     </p>
+      Total: ${currency}&nbsp;<span class="trip-info__cost-value">${price}</span>
+    </p>
   `;
 };
 
-const createControls = () => {
-  return `<div class="trip-main__trip-controls  trip-controls"></div>`;
-};
+const createControls = () => `<div class="trip-main__trip-controls  trip-controls"></div>`;
 
 const createControlsMenu = () => {
   return `
     <nav class="trip-controls__trip-tabs  trip-tabs">
       <a class="trip-tabs__btn  trip-tabs__btn--active" href="#">Table</a>
       <a class="trip-tabs__btn" href="#">Stats</a>
-    </nav>
-  `;
+    </nav>`;
 };
 
 const createFilterList = () => {
   return `
     <form class="trip-filters" action="#" method="get">
       <div class="trip-filters__filter">
-          <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
-          <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
-        </div>
+        <input id="filter-everything" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="everything" checked>
+        <label class="trip-filters__filter-label" for="filter-everything">Everything</label>
+      </div>
 
-        <div class="trip-filters__filter">
-          <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
-          <label class="trip-filters__filter-label" for="filter-future">Future</label>
-        </div>
+      <div class="trip-filters__filter">
+        <input id="filter-future" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="future">
+        <label class="trip-filters__filter-label" for="filter-future">Future</label>
+      </div>
 
-        <div class="trip-filters__filter">
-          <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
-          <label class="trip-filters__filter-label" for="filter-past">Past</label>
-        </div>
+      <div class="trip-filters__filter">
+        <input id="filter-past" class="trip-filters__filter-input  visually-hidden" type="radio" name="trip-filter" value="past">
+        <label class="trip-filters__filter-label" for="filter-past">Past</label>
+      </div>
 
-        <button class="visually-hidden" type="submit">Accept filter</button>
-      </form>
-  `;
+      <button class="visually-hidden" type="submit">Accept filter</button>
+    </form>`;
 };
 
 const createSortList = () => {
@@ -278,14 +273,9 @@ const createEventForm = () => {
   `;
 };
 
-const createTripEventsContainer = () => {
-  return `<section class="trip-events"></section>`;
-};
+const createTripEventsContainer = () => `<section class="trip-events"></section>`;
 
-
-const createTripEventsList = () => {
-  return `<ul class="trip-events__list"></ul>`;
-};
+const createTripEventsList = () => `<ul class="trip-events__list"></ul>`;
 
 const createTripEventsItem = () => {
   return `
@@ -326,9 +316,7 @@ const createTripEventsItem = () => {
   `;
 };
 
-const createTripDayList = () => {
-  return `<ul class="trip-days"></ul>`;
-};
+const createTripDayList = () => `<ul class="trip-days"></ul>`;
 
 const createTripDayItem = (dayAmount) => {
   return `
@@ -340,6 +328,7 @@ const createTripDayItem = (dayAmount) => {
     </li>
   `;
 };
+
 
 const headerElement = document.querySelector(`.page-header`);
 const headerTripMainElement = headerElement.querySelector(`.trip-main`);
@@ -373,17 +362,16 @@ render(tripEventsContainer, createEventForm(), `beforeend`);
 render(tripEventsContainer, createTripDayList(), `beforeend`);
 const tripDaysContainer = tripEventsContainer.querySelector(`.trip-days`);
 
-for (let i = 0; i < DAYS_AMOUNT; i++) {
+loopHelper(LIST_DAYS_AMOUNT, (item, i) => {
   render(tripDaysContainer, createTripDayItem(i + 1), `beforeend`);
-
   const thisDay = tripDaysContainer.querySelector(`.trip-days__item[data-amount="${i + 1}"]`);
 
+  if (thisDay) {
+    render(thisDay, createTripEventsList(), `beforeend`);
+    const tripEventsList = thisDay.querySelector(`.trip-events__list`);
 
-  render(thisDay, createTripEventsList(), `beforeend`);
-
-  const tripEventsList = thisDay.querySelector(`.trip-events__list`);
-
-  for (let j = 0; j < EVENT_POINT_AMOUNT; j++) {
-    render(tripEventsList, createTripEventsItem(), `beforeend`);
+    if (tripEventsList) {
+      loopHelper(EVENT_POINTS_AMOUNT, () => render(tripEventsList, createTripEventsItem(), `beforeend`));
+    }
   }
-}
+});
