@@ -8,14 +8,28 @@ import {createNewEventButton} from "./view/new-event-button";
 import {createSortList} from "./view/sort-list";
 import {createTripDaysItem} from "./view/trip-days-item";
 import {createTripDaysList} from "./view/trip-days-list";
-import {createTripEventsItem} from "./view/trip-events-item";
+import {createTripEventsItem} from "./view/event";
+import {createEventEditTemplate} from "./view/event-edit";
 import {createTripInfo} from "./view/trip-info";
 import {createTripInfoCost} from "./view/trip-info-cost";
 import {createTripInfoMain} from "./view/trip-info-main";
-import {generateLoop, render} from "./utils";
+import {noPoints} from "./view/no-points";
+import {generateLoop, render, getRandomInt} from "./utils";
+import {generateEvent} from "./mock/trip-events-item";
 
-const LIST_DAYS_AMOUNT = 2;
-const EVENT_POINTS_AMOUNT = 3;
+const LIST_DAYS_AMOUNT_MIN = 5;
+const LIST_DAYS_AMOUNT_MAX = 5;
+const LIST_DAYS_AMOUNT = getRandomInt(LIST_DAYS_AMOUNT_MIN, LIST_DAYS_AMOUNT_MAX);
+
+const EVENT_POINTS_AMOUNT_MIN = 1;
+const EVENT_POINTS_AMOUNT_MAX = 5;
+const EVENT_POINTS_AMOUNT = getRandomInt(EVENT_POINTS_AMOUNT_MIN, EVENT_POINTS_AMOUNT_MAX);
+
+const eventsArray = generateLoop(20, () => generateEvent());
+
+console.log(eventsArray);
+
+// createSortList(eventsArray);
 
 const headerElement = document.querySelector(`.page-header`);
 const headerTripMainElement = headerElement.querySelector(`.trip-main`);
@@ -42,23 +56,36 @@ const pageMainContainer = pageMain.querySelector(`.page-body__container`);
 render(pageMainContainer, createTripEventsContainer(), `beforeend`);
 
 const tripEventsContainer = pageMainContainer.querySelector(`.trip-events`);
-render(tripEventsContainer, createSortList(), `beforeend`);
 
-render(tripEventsContainer, createEventForm(), `beforeend`);
+if (LIST_DAYS_AMOUNT > 0) {
+  render(tripEventsContainer, createSortList(), `beforeend`);
 
-render(tripEventsContainer, createTripDaysList(), `beforeend`);
-const tripDaysContainer = tripEventsContainer.querySelector(`.trip-days`);
+  // render(tripEventsContainer, createEventForm(), `beforeend`);
 
-generateLoop(LIST_DAYS_AMOUNT, (item, i) => {
-  render(tripDaysContainer, createTripDaysItem(i + 1), `beforeend`);
-  const thisDay = tripDaysContainer.querySelector(`.trip-days__item[data-amount="${i + 1}"]`);
+  render(tripEventsContainer, createTripDaysList(), `beforeend`);
+  const tripDaysContainer = tripEventsContainer.querySelector(`.trip-days`);
 
-  if (thisDay) {
-    render(thisDay, createTripEventsList(), `beforeend`);
-    const tripEventsList = thisDay.querySelector(`.trip-events__list`);
+  generateLoop(LIST_DAYS_AMOUNT, (day, i) => {
+    render(tripDaysContainer, createTripDaysItem(i + 1), `beforeend`);
+    const thisDay = tripDaysContainer.querySelector(`.trip-days__item[data-amount="${i + 1}"]`);
 
-    if (tripEventsList) {
-      generateLoop(EVENT_POINTS_AMOUNT, () => render(tripEventsList, createTripEventsItem(), `beforeend`));
+    if (thisDay) {
+      render(thisDay, createTripEventsList(), `beforeend`);
+      const tripEventsList = thisDay.querySelector(`.trip-events__list`);
+
+      if (tripEventsList) {
+        generateLoop(EVENT_POINTS_AMOUNT, (event, j) => {
+          if (j === 0) {
+            render(tripEventsList, createEventEditTemplate(eventsArray[0]), `beforeend`);
+          } else {
+            render(tripEventsList, createTripEventsItem(eventsArray[0]), `beforeend`);
+          }
+        });
+      }
     }
-  }
-});
+  });
+} else {
+  render(tripEventsContainer, noPoints(), `beforeend`);
+}
+
+
