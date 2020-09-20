@@ -18,5 +18,8 @@
   },
   "engines": {
     "node": "12"
+  },
+  "dependencies": {
+    "flatpickr": "4.6.6"
   }
 }
