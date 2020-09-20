@@ -1,18 +1,18 @@
 import {getRandomInt, shuffleArray, humanizeTime} from "../utils";
 
-const getDestinationCity = () => {
-  const destinationCityArray = [
-    `Barnaul`,
-    `Moscow`,
-    `Saint-Petersburg`,
-    `Kaliningrad`,
-    `Kemerovo`,
-    `Novosibirsk`,
-    `Yaroslavl`,
-    `Bangkok`,
-    `Nha Trang`
-  ];
+const destinationCityArray = [
+  `Barnaul`,
+  `Moscow`,
+  `Saint-Petersburg`,
+  `Kaliningrad`,
+  `Kemerovo`,
+  `Novosibirsk`,
+  `Yaroslavl`,
+  `Bangkok`,
+  `Nha Trang`
+];
 
+const getDestinationCity = () => {
   return destinationCityArray[getRandomInt(0, destinationCityArray.length - 1)];
 };
 
@@ -57,13 +57,16 @@ const getTravelType = () => {
 
 const currentTravelType = getTravelType();
 
+const stayEventTypeArray = [`Check-In`, `Sightseeing`, `Restaurant`];
+const travelEventTypeArray = [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`];
+
 const getEventType = () => {
-  const eventsTypeArray = {
-    'stay': [`Check-In`, `Sightseeing`, `Restaurant`],
-    'travel': [`Taxi`, `Bus`, `Train`, `Ship`, `Transport`, `Drive`, `Flight`],
+  const eventTypeArray = {
+    'stay': stayEventTypeArray,
+    'travel': travelEventTypeArray,
   };
 
-  return eventsTypeArray[currentTravelType][getRandomInt(0, eventsTypeArray[currentTravelType].length - 1)];
+  return eventTypeArray[currentTravelType][getRandomInt(0, eventTypeArray[currentTravelType].length - 1)];
 };
 
 const getEventOffers = () => {
@@ -95,6 +98,9 @@ export const generateEvent = () => {
   const checkoutTimestamp = checkinTimestamp + durationTimestamp;
 
   return {
+    stayEventTypes: stayEventTypeArray,
+    travelEventTypes: travelEventTypeArray,
+    destinations: destinationCityArray,
     eventType: getEventType(),
     destination: getDestinationCity(),
     offers: getEventOffers(),

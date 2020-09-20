@@ -1,5 +1,47 @@
+import {flatpickr} from "../common";
+
 export const createEventEditTemplate = (event) => {
-  const {eventType, destination, price, durationTime} = event;
+  const {eventType, price} = event;
+
+  const generateTravelEventTypeListTemplate = () => {
+    const {travelEventTypes} = event;
+
+    return (travelEventTypes.map((item, i) => `
+      <div class="event__type-item">
+        <input id="event-type-${item}-${i}" class="event__type-input visually-hidden" type="radio" name="event-type" value="${item}">
+        <label class="event__type-label  event__type-label--${item.toLowerCase()}" for="event-type-${item}-${i}">${item}</label>
+      </div>
+    `).join(``));
+  };
+
+  const generateStayEventTypeListTemplate = () => {
+    const {stayEventTypes} = event;
+
+    return (stayEventTypes.map((item, i) => `
+      <div class="event__type-item">
+        <input id="event-type-${item}-${i}" class="event__type-input visually-hidden" type="radio" name="event-type" value="${item}">
+        <label class="event__type-label  event__type-label--${item.toLowerCase()}" for="event-type-${item}-${i}">${item}</label>
+      </div>
+    `).join(``));
+  };
+
+  const generateDestinationsCityList = () => {
+    const {destinations, destination} = event;
+
+    return (`
+      <div class="event__field-group  event__field-group--destination">
+        <label class="event__label  event__type-output" for="event-destination-1">
+          Flight to
+        </label>
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination} list="destination-list-1">
+        <datalist id="destination-list-1">
+          ${destinations.map((item) => `
+            <option value="${item}"></option>
+          `)}
+        </datalist>
+      </div>
+    `);
+  };
 
   const generateOffersBlockTemplate = () => {
     const {offers} = event;
@@ -31,6 +73,23 @@ export const createEventEditTemplate = (event) => {
     `);
   };
 
+  const generateTimeFieldGroup = () => {
+    const {checkingTime, checkoutTime} = event;
+    return (`
+      <div class="event__field-group  event__field-group--time">
+        <label class="visually-hidden" for="event-start-time-1">
+          From
+        </label>
+        <input class="event__input event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${checkingTime}">
+          &mdash;
+        <label class="visually-hidden" for="event-end-time-1">
+          To
+        </label>
+        <input class="event__input event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${checkoutTime}">
+      </div>
+    `);
+  };
+
   return `
     <li class="trip-events__item">
       <form class="event  event--edit" action="#" method="post">
@@ -45,87 +104,19 @@ export const createEventEditTemplate = (event) => {
             <div class="event__type-list">
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">${eventType}</legend>
-
-                <div class="event__type-item">
-                  <input id="event-type-taxi-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="taxi">
-                  <label class="event__type-label  event__type-label--taxi" for="event-type-taxi-1">Taxi</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-bus-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="bus">
-                  <label class="event__type-label  event__type-label--bus" for="event-type-bus-1">Bus</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-train-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="train">
-                  <label class="event__type-label  event__type-label--train" for="event-type-train-1">Train</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-ship-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="ship">
-                  <label class="event__type-label  event__type-label--ship" for="event-type-ship-1">Ship</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-transport-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="transport">
-                  <label class="event__type-label  event__type-label--transport" for="event-type-transport-1">Transport</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-drive-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="drive">
-                  <label class="event__type-label  event__type-label--drive" for="event-type-drive-1">Drive</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-flight-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="flight" checked>
-                  <label class="event__type-label  event__type-label--flight" for="event-type-flight-1">Flight</label>
-                </div>
+                ${generateTravelEventTypeListTemplate()}
               </fieldset>
 
               <fieldset class="event__type-group">
                 <legend class="visually-hidden">Activity</legend>
-
-                <div class="event__type-item">
-                  <input id="event-type-check-in-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="check-in">
-                  <label class="event__type-label  event__type-label--check-in" for="event-type-check-in-1">Check-in</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-sightseeing-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="sightseeing">
-                  <label class="event__type-label  event__type-label--sightseeing" for="event-type-sightseeing-1">Sightseeing</label>
-                </div>
-
-                <div class="event__type-item">
-                  <input id="event-type-restaurant-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="restaurant">
-                  <label class="event__type-label  event__type-label--restaurant" for="event-type-restaurant-1">Restaurant</label>
-                </div>
+                ${generateStayEventTypeListTemplate()}
               </fieldset>
             </div>
           </div>
 
-          <div class="event__field-group  event__field-group--destination">
-            <label class="event__label  event__type-output" for="event-destination-1">
-              Flight to
-            </label>
-            <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value=${destination} list="destination-list-1">
-            <datalist id="destination-list-1">
-              <option value="Amsterdam"></option>
-              <option value="Geneva"></option>
-              <option value=${destination}></option>
-            </datalist>
-          </div>
+          ${generateDestinationsCityList()}
 
-          <div class="event__field-group  event__field-group--time">
-            <label class="visually-hidden" for="event-start-time-1">
-              From
-            </label>
-            <input class="event__input event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 12:25">
-            &mdash;
-            <label class="visually-hidden" for="event-end-time-1">
-              To
-            </label>
-            <input class="event__input event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 13:35">
-          </div>
+          ${generateTimeFieldGroup()}
 
           <div class="event__field-group  event__field-group--price">
             <label class="event__label" for="event-price-1">

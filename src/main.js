@@ -26,7 +26,6 @@ const EVENT_POINTS_AMOUNT_MAX = 5;
 const EVENT_POINTS_AMOUNT = getRandomInt(EVENT_POINTS_AMOUNT_MIN, EVENT_POINTS_AMOUNT_MAX);
 
 const eventsArray = generateLoop(20, () => generateEvent());
-
 console.log(eventsArray);
 
 // createSortList(eventsArray);
