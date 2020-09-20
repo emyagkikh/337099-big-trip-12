@@ -1,6 +1,5 @@
 import {createControlsContainer} from "./view/controls-container";
 import {createControlsMenu} from "./view/controls-menu";
-import {createEventForm} from "./view/event-form";
 import {createTripEventsContainer} from "./view/events-container";
 import {createTripEventsList} from "./view/events-list";
 import {createFilterList} from "./view/filter-list";
@@ -25,7 +24,13 @@ const EVENT_POINTS_AMOUNT_MIN = 5;
 const EVENT_POINTS_AMOUNT_MAX = 5;
 const EVENT_POINTS_AMOUNT = getRandomInt(EVENT_POINTS_AMOUNT_MIN, EVENT_POINTS_AMOUNT_MAX);
 
-const eventsArray = generateLoop(1, () => generateEvent());
+const eventsArray = generateLoop(20, () => generateEvent());
+
+const eventSortFunction = (a, b) => {
+  return a.checkingTime - b.checkingTime;
+};
+
+eventsArray.sort(eventSortFunction);
 
 // createSortList(eventsArray);
 

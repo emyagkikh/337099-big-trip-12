@@ -95,10 +95,10 @@ const getEventOffers = () => {
 const generateTimeStamps = () => {
   const currentDate = new Date();
 
-  const minCheckInGap = 1000;
-  const maxCheckInGap = 1000000;
-  const minCheckOutGap = 100000;
-  const maxCheckOutGap = 100000000;
+  const minCheckInGap = 10000;
+  const maxCheckInGap = 100000000;
+  const minCheckOutGap = 30000000;
+  const maxCheckOutGap = 300000000;
 
   const checkIn = new Date(currentDate.getTime() + getRandomInt(minCheckInGap, maxCheckInGap));
   const checkOut = new Date(checkIn.getTime() + getRandomInt(minCheckOutGap, maxCheckOutGap));
