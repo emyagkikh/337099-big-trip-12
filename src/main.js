@@ -21,12 +21,11 @@ const LIST_DAYS_AMOUNT_MIN = 5;
 const LIST_DAYS_AMOUNT_MAX = 5;
 const LIST_DAYS_AMOUNT = getRandomInt(LIST_DAYS_AMOUNT_MIN, LIST_DAYS_AMOUNT_MAX);
 
-const EVENT_POINTS_AMOUNT_MIN = 1;
+const EVENT_POINTS_AMOUNT_MIN = 5;
 const EVENT_POINTS_AMOUNT_MAX = 5;
 const EVENT_POINTS_AMOUNT = getRandomInt(EVENT_POINTS_AMOUNT_MIN, EVENT_POINTS_AMOUNT_MAX);
 
-const eventsArray = generateLoop(20, () => generateEvent());
-console.log(eventsArray);
+const eventsArray = generateLoop(1, () => generateEvent());
 
 // createSortList(eventsArray);
 
@@ -37,8 +36,8 @@ render(headerTripMainElement, createTripInfo(), `beforeend`);
 const headerTripInfo = headerTripMainElement.querySelector(`.trip-main__trip-info`);
 
 if (headerTripInfo) {
-  render(headerTripInfo, createTripInfoMain(), `beforeend`);
-  render(headerTripInfo, createTripInfoCost(), `beforeend`);
+  render(headerTripInfo, createTripInfoMain(eventsArray), `beforeend`);
+  render(headerTripInfo, createTripInfoCost(eventsArray), `beforeend`);
 }
 
 render(headerTripMainElement, createControlsContainer(), `beforeend`);

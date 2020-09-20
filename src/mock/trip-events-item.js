@@ -1,4 +1,4 @@
-import {getRandomInt, shuffleArray, humanizeTime} from "../utils";
+import {getRandomInt, shuffleArray} from "../utils";
 
 const destinationCityArray = [
   `Barnaul`,
@@ -92,11 +92,27 @@ const getEventOffers = () => {
   return shuffleArray(entriesOfferArray).slice(0, getRandomInt(0, entriesOfferArray.length - 1));
 };
 
-export const generateEvent = () => {
-  const checkinTimestamp = getRandomInt(1000000, 10000000);
-  const durationTimestamp = getRandomInt(1000000, 10000000);
-  const checkoutTimestamp = checkinTimestamp + durationTimestamp;
+const generateTimeStamps = () => {
+  const currentDate = new Date();
 
+  const minCheckInGap = 1000;
+  const maxCheckInGap = 1000000;
+  const minCheckOutGap = 100000;
+  const maxCheckOutGap = 100000000;
+
+  const checkIn = new Date(currentDate.getTime() + getRandomInt(minCheckInGap, maxCheckInGap));
+  const checkOut = new Date(checkIn.getTime() + getRandomInt(minCheckOutGap, maxCheckOutGap));
+  const duration = checkOut - checkIn;
+
+  return {
+    checkIn,
+    checkOut,
+    duration,
+  };
+};
+
+export const generateEvent = () => {
+  const {checkIn, checkOut, duration} = generateTimeStamps();
   return {
     stayEventTypes: stayEventTypeArray,
     travelEventTypes: travelEventTypeArray,
@@ -105,9 +121,9 @@ export const generateEvent = () => {
     destination: getDestinationCity(),
     offers: getEventOffers(),
     price: getRandomInt(20, 600),
-    checkingTime: humanizeTime(checkinTimestamp),
-    checkoutTime: humanizeTime(checkoutTimestamp),
-    durationTime: humanizeTime(durationTimestamp),
+    checkingTime: checkIn,
+    checkoutTime: checkOut,
+    durationTime: duration,
     description: getDestinationDescription(),
     photos: getDestinationPhotos(),
   };

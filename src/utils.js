@@ -20,13 +20,18 @@ export const shuffleArray = (array) => {
   return shuffledArray;
 };
 
-export const humanizeTime = (timestamp) => {
+export const humanizeTime = (timestamp, isDuration = false) => {
   const currentDate = new Date(timestamp);
-  if (currentDate.getDate() > 2) {
+
+  if (!isDuration) {
+    return `${currentDate.getHours()}H ${currentDate.getMinutes()}M`;
+  }
+
+  if (currentDate.getDate() >= 2) {
     return `${currentDate.getDate()}D ${currentDate.getHours()}H ${currentDate.getMinutes()}M`;
   } else if (currentDate.getHours() < 1) {
-    return `${currentDate.getHours()}H ${currentDate.getMinutes()}M`;
+    return `${currentDate.getMinutes()}M`;
   } else {
-    return `${currentDate.getDate()}D ${currentDate.getHours()}H ${currentDate.getMinutes()}M`;
+    return `${currentDate.getHours()}H ${currentDate.getMinutes()}M`;
   }
 };

@@ -1,3 +1,5 @@
+import {humanizeTime} from "../utils";
+
 export const createTripEventsItem = (event) => {
   const {eventType, destination, price, checkingTime, checkoutTime, durationTime} = event;
 
@@ -27,11 +29,11 @@ export const createTripEventsItem = (event) => {
 
         <div class="event__schedule">
           <p class="event__time">
-            <time class="event__start-time" datetime="2019-03-18T14:30">${checkingTime}</time>
+            <time class="event__start-time" datetime="2019-03-18T14:30">${humanizeTime(checkingTime)}</time>
             &mdash;
-            <time class="event__end-time" datetime="2019-03-18T16:05">${checkoutTime}</time>
+            <time class="event__end-time" datetime="2019-03-18T16:05">${humanizeTime(checkoutTime)}</time>
           </p>
-          <p class="event__duration">${durationTime}</p>
+          <p class="event__duration">${humanizeTime(durationTime , true)}</p>
         </div>
 
         <p class="event__price">
